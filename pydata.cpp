@@ -330,7 +330,7 @@ class Data {
             return dct[key];
         }
 
-        Data & operator[] (int index) {
+        Data & operator[] (const int &index) {
             is_fatal = true;
             crash_and_burn_if(
                 datatype != t_list,
