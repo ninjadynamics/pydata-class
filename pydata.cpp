@@ -244,6 +244,33 @@ class Data {
             return set_data_at(path, Data(new_data));
         }
 
+        bool endswith(const string &substr) {
+            datatype_must_be(t_string);
+            return str.rfind(substr) == str.size() - substr.size();
+        }
+
+        bool startswith(const string &substr) {
+            datatype_must_be(t_string);
+            return str.find(substr) == 0;
+        }
+
+        size_t find(const string &substr) {
+            datatype_must_be(t_string);
+            size_t index = str.find(substr);
+            if (index == string::npos) {
+                return -1;
+            }
+            return index;
+        }
+
+        Data char_at(const int &index) {
+            datatype_must_be(t_string);
+            if (index < 0) {
+                return string(1, str[str.size() + index]);
+            }
+            return string(1, str[index]);
+        }
+
         Data split() {
             datatype_must_be(t_string);
             return split(" ");
@@ -264,6 +291,21 @@ class Data {
             delete[] cstr;
             delete[] splt;
             return result;
+        }
+
+        Data rtrim() {
+            datatype_must_be(t_string);
+            return _rtrim(str);
+        }
+
+        Data ltrim() {
+            datatype_must_be(t_string);
+            return _ltrim(str);
+        }
+
+        Data trim() {
+            datatype_must_be(t_string);
+            return _ltrim(_rtrim(str));
         }
 
         void operator= (const string &s) {
@@ -476,6 +518,30 @@ class Data {
                     break;
             }
             return result;
+        }
+
+        string _rtrim(string s) {
+            string whitespace(" \t\f\v\n\r");
+            size_t found = s.find_last_not_of(whitespace);
+            if (found != string::npos) {
+                s.erase(found + 1);
+            }
+            else {
+                s = "";
+            }
+            return s;
+        }
+
+        string _ltrim(string s) {
+            string whitespace(" \t\f\v\n\r");
+            size_t found = s.find_first_not_of(whitespace);
+            if (found != string::npos) {
+                s.erase(0, found);
+            }
+            else {
+                s = "";
+            }
+            return s;
         }
 
         void datatype_must_be(const Datatype &d_type) {

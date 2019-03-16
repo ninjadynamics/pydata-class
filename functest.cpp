@@ -84,6 +84,13 @@ int main() {
     // Direct Access (read)
     data["bruno"] = "silva";
         cout << data["bruno"].str << "\n";
+        cout << data["bruno"].char_at(-2).str << "<\n";
+        cout << data["bruno"].endswith("va") << "<\n";
+        cout << data["bruno"].endswith("wa") << "<\n";
+        cout << data["bruno"].startswith("sil") << "<\n";
+        cout << data["bruno"].startswith("syl") << "<\n";
+        cout << data["bruno"].find("lv") << "<\n";
+        // cout << data.startswith("syl") << "<\n";
 
     data["bruno"] = 1983;
         cout << data["bruno"].num << "\n";
@@ -122,6 +129,11 @@ int main() {
         cout << data["bruno"][-1].num << "\n";
 
     cout << "Datatype of data[\"bruno\"]: "<< data["bruno"].get_datatype() << "\n";
+
+    data = " Hello World! ";
+    cout << ">" << data.ltrim().str << "<\n";
+    cout << ">" << data.rtrim().str << "<\n";
+    cout << ">" << data.trim().str << "<\n";
 
     return 0;
 }
