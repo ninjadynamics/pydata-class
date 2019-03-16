@@ -135,5 +135,17 @@ int main() {
     cout << ">" << data.rtrim().str << "<\n";
     cout << ">" << data.trim().str << "<\n";
 
+    data = string();
+    cout << data.empty() << "<\n";
+
+    data = list();
+    cout << data.empty() << "<\n";
+
+    data = dict();
+    cout << data.empty() << "<\n";
+
+    data = 0;
+    cout << data.empty() << "<\n";
+
     return 0;
 }

@@ -263,6 +263,15 @@ class Data {
             return index;
         }
 
+        size_t find(const char &c) {
+            datatype_must_be(t_string);
+            size_t index = str.find(c);
+            if (index == string::npos) {
+                return -1;
+            }
+            return index;
+        }
+
         Data char_at(const int &index) {
             datatype_must_be(t_string);
             if (index < 0) {
@@ -306,6 +315,26 @@ class Data {
         Data trim() {
             datatype_must_be(t_string);
             return _ltrim(_rtrim(str));
+        }
+
+        bool empty() {
+            switch (datatype) {
+                case t_null:
+                    return true;
+
+                case t_number:
+                    return num == 0;
+
+                case t_string:
+                    return str.empty();
+
+                case t_list:
+                    return lst.empty();
+
+                case t_dict:
+                    return dct.empty();
+
+            }
         }
 
         void operator= (const string &s) {
