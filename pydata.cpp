@@ -27,14 +27,6 @@ SOFTWARE.
 
 class Data {
     public:
-        typedef enum Datatype {
-            t_null,      // 0
-            t_number,    // 1
-            t_string,    // 2
-            t_dict,      // 3
-            t_list       // 4
-        } Datatype;
-
         double num;
         string str;
         #if __cplusplus < 199711L
@@ -96,23 +88,17 @@ class Data {
         }
 
         void append(const Data &data) {
-            if (datatype != t_list) {
-                return;
-            }
+            datatype_must_be(t_list);
             lst.push_back(data);
         }
 
         void append(const double &n) {
-            if (datatype != t_list) {
-                return;
-            }
+            datatype_must_be(t_list);
             lst.push_back(n);
         }
 
         void append(const string &s) {
-            if (datatype != t_list) {
-                return;
-            }
+            datatype_must_be(t_list);
             lst.push_back(s);
         }
 
@@ -259,16 +245,12 @@ class Data {
         }
 
         Data split() {
+            datatype_must_be(t_string);
             return split(" ");
         }
 
         Data split(const string &splitter) {
-            is_fatal = true;
-            crash_and_burn_if(
-                datatype != t_string,
-                "Datatype must be 'string' (type error)"
-            );
-            is_fatal = false;
+            datatype_must_be(t_string);
             Data result = LIST();
             char *cstr = new char[str.size() + 1];
             char *splt = new char[splitter.size() + 1];
@@ -321,22 +303,12 @@ class Data {
         }
 
         Data & operator[] (const string &key) {
-            is_fatal = true;
-            crash_and_burn_if(
-                datatype != t_dict,
-                "Datatype must be 'dict' (invalid access)"
-            );
-            is_fatal = false;
+            datatype_must_be(t_dict);
             return dct[key];
         }
 
         Data & operator[] (const int &index) {
-            is_fatal = true;
-            crash_and_burn_if(
-                datatype != t_list,
-                "Datatype must be 'list' (invalid access)"
-            );
-            is_fatal = false;
+            datatype_must_be(t_list);
             if (index < 0) {
                 return lst[lst.size() + index];
             }
@@ -504,6 +476,35 @@ class Data {
                     break;
             }
             return result;
+        }
+
+        void datatype_must_be(const Datatype &d_type) {
+            is_fatal = true;
+            string \
+            error_message  = "Datatype must be '";
+            error_message += datatypes[d_type];
+            error_message += "' (type error)";
+            crash_and_burn_if(
+                datatype != d_type,
+                error_message
+            );
+            is_fatal = false;
+        }
+
+        void datatypes_must_be(const Datatype &d_type1, const Datatype &d_type2) {
+            is_fatal = true;
+            string \
+            error_message  = "Datatypes must be either '";
+            error_message += datatypes[d_type1];
+            error_message += "' or '";
+            error_message += datatypes[d_type2];
+            error_message += "' (type error)";
+            crash_and_burn_if(
+                datatype != d_type1 &&
+                datatype != d_type2,
+                error_message
+            );
+            is_fatal = false;
         }
 };
 
