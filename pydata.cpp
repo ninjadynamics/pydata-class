@@ -119,7 +119,7 @@ class Data {
         Data *get(const int &index) {
             crash_and_burn_if(
                 datatype != t_list,
-                "Not a list (invalid get)"
+                "Datatype must be 'list' (invalid get)"
             );
             crash_and_burn_if(
                 index < 0 || index >= lst.size(),
@@ -135,7 +135,7 @@ class Data {
         Data *get(const string &key) {
             crash_and_burn_if(
                 datatype != t_dict,
-                "Not a dict (invalid get)"
+                "Datatype must be 'dict' (invalid get)"
             );
             IF_IT_SURVIVES {
                 return NULL;
@@ -164,7 +164,7 @@ class Data {
                     it = data->dct.find(key);
                     crash_and_burn_if(
                         it == data->dct.end(),
-                        "Key error: " + string(key)
+                        "Key error (not found): " + string(key)
                     );
                     IF_IT_SURVIVES {
                         data = NULL;
@@ -215,7 +215,7 @@ class Data {
                     it = data->dct.find(key);
                     crash_and_burn_if(
                         it == data->dct.end(),
-                        "Key error: " + string(key)
+                        "Key error (not found): " + string(key)
                     );
                     IF_IT_SURVIVES {
                         data = NULL;
@@ -263,6 +263,12 @@ class Data {
         }
 
         Data split(const string &splitter) {
+            is_fatal = true;
+            crash_and_burn_if(
+                datatype != t_string,
+                "Datatype must be 'string' (type error)"
+            );
+            is_fatal = false;
             Data result = LIST();
             char *cstr = new char[str.size() + 1];
             char *splt = new char[splitter.size() + 1];
@@ -314,21 +320,21 @@ class Data {
             datatype = t_list;
         }
 
-        Data & operator[] (string key) {
+        Data & operator[] (const string &key) {
             is_fatal = true;
             crash_and_burn_if(
                 datatype != t_dict,
-                "Not a dict (invalid access)"
+                "Datatype must be 'dict' (invalid access)"
             );
             is_fatal = false;
             return dct[key];
         }
 
-        Data & operator[] (const double &index) {
+        Data & operator[] (int index) {
             is_fatal = true;
             crash_and_burn_if(
                 datatype != t_list,
-                "Not a list (invalid access)"
+                "Datatype must be 'list' (invalid access)"
             );
             is_fatal = false;
             if (index < 0) {
