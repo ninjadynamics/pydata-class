@@ -337,6 +337,12 @@ class Data {
             }
         }
 
+        bool has_key(string key) {
+            DICT::iterator it;
+            it = dct.find(key);
+            return it != dct.end();
+        }
+
         void operator= (const string &s) {
             initialize();
             str = s;

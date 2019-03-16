@@ -128,6 +128,8 @@ int main() {
         cout << data["bruno"][2].num << "\n";
         cout << data["bruno"][-1].num << "\n";
 
+    cout << data.has_key("bruno") << "<\n";
+
     cout << "Datatype of data[\"bruno\"]: "<< data["bruno"].get_datatype() << "\n";
 
     data = " Hello World! ";
