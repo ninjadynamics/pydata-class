@@ -149,5 +149,32 @@ int main() {
     data = 0;
     cout << data.empty() << "<\n";
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    cout << endl << endl;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    data = NULL_DATA;
+    cout << "Empty data object:\n";
+    cout << data.json();
+    cout << "End of JSON output\n\n";
+
+    data = dict();
+    cout << "Empty root dict:\n";
+    cout << data.json();
+    cout << "End of JSON output\n\n";
+
+    data = list();
+    cout << "Empty root list:\n";
+    cout << data.json();
+    cout << "End of JSON output\n\n";
+
+    cout << "Null value / null element / empty dict:\n";
+    data = dict();
+    data["Null"] = NULL_DATA;
+    data["List"] = list();
+    data["List"].append(NULL_DATA);
+    data["Dict"] = dict();
+    cout << data.json();
+
     return 0;
 }

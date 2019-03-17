@@ -57,6 +57,7 @@ closing (...ing, Data>>) with a bitshift operation (>>).
 #define NEW_VMAP        VMAP(); _dct.push_back(DICT())
 #define IF_IT_SURVIVES  if (it_survives())
 #define PAUSE(x)        cout << x << endl; getchar()
+#define NULL_DATA       Data()
 
 #if __cplusplus < 199711L
 #define dct _dct[0]

@@ -478,6 +478,10 @@ class Data {
 
         void print_value(Data &value) {
             switch (value.get_datatype()) {
+                case t_null:
+                    output_buffer += "null,\n";
+                    break;
+
                 case t_string:
                     output_buffer += "\"" + value.str + "\",\n";
                     break;
