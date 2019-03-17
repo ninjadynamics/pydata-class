@@ -82,8 +82,17 @@ string to_string(long value)
 }
 #endif
 
-class  Data;
-string separator = "/";
-bool   error_survival = true;
+typedef enum Datatype {
+    t_null,      // 0
+    t_number,    // 1
+    t_string,    // 2
+    t_dict,      // 3
+    t_list       // 4
+} Datatype;
 
+class    Data;
+Datatype datatype;
+string   separator = "/";
+bool     error_survival = true;
+string   datatypes[] = {"null", "number", "string", "dict", "list"};
 #endif /* End of include guard: PYDATA_HEADER */
