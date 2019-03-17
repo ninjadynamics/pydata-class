@@ -27,6 +27,7 @@ SOFTWARE.
 
 class Data {
     public:
+        bool   bln;
         double num;
         string str;
         #if __cplusplus < 199711L
@@ -62,6 +63,12 @@ class Data {
             initialize();
             num = (double)n;
             datatype = t_number;
+        }
+
+        Data(char b) {
+            initialize();
+            bln = (bool)b;
+            datatype = t_bool;
         }
 
         Data(const DICT &m) {
@@ -369,6 +376,12 @@ class Data {
             datatype = t_number;
         }
 
+        void operator= (char b) {
+            initialize();
+            bln = (bool)b;
+            datatype = t_bool;
+        }
+
         void operator= (DICT m) {
             initialize();
             dct = m;
@@ -403,6 +416,7 @@ class Data {
         void initialize() {
             num      = 0;
             str      = "";
+            bln      = false;
             is_error = false;
             is_fatal = false;
             datatype = t_null;
@@ -482,6 +496,11 @@ class Data {
                     output_buffer += "null,\n";
                     break;
 
+                case t_bool:
+                    value.bln ? output_buffer += "true" : output_buffer += "false";
+                    output_buffer += ",\n";
+                    break;
+
                 case t_string:
                     output_buffer += "\"" + value.str + "\",\n";
                     break;
@@ -528,6 +547,8 @@ class Data {
         bool json_recursive(Data &object, const int &level) {
             bool result = false;
             switch (object.get_datatype()) {
+                case t_null:
+                case t_bool:
                 case t_number:
                 case t_string:
                     indent(level);

@@ -58,6 +58,8 @@ closing (...ing, Data>>) with a bitshift operation (>>).
 #define IF_IT_SURVIVES  if (it_survives())
 #define PAUSE(x)        cout << x << endl; getchar()
 #define NULL_DATA       Data()
+#define BOOL_FALSE      '\0'
+#define BOOL_TRUE       '\1'
 
 #if __cplusplus < 199711L
 #define dct _dct[0]
@@ -84,16 +86,17 @@ string to_string(long value)
 #endif
 
 typedef enum Datatype {
-    t_null,      // 0
-    t_number,    // 1
-    t_string,    // 2
-    t_dict,      // 3
-    t_list       // 4
+    t_null,
+    t_bool,
+    t_number,
+    t_string,
+    t_dict,
+    t_list
 } Datatype;
 
 class    Data;
 Datatype datatype;
 string   separator = "/";
 bool     error_survival = true;
-string   datatypes[] = {"null", "number", "string", "dict", "list"};
+string   datatypes[] = {"null", "bool", "number", "string", "dict", "list"};
 #endif /* End of include guard: PYDATA_HEADER */

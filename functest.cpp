@@ -15,6 +15,9 @@ int main() {
     data["J (dict)"]        = dict();
     data["K (zero string)"] = "";
     data["L (list)"]        = list();
+    data["M (null)"]        = NULL_DATA;
+    data["N (bool)"]        = BOOL_FALSE;
+    data["O (bool)"]        = BOOL_TRUE;
     cout << "Data: " << data.json() << endl;
 
 
@@ -149,9 +152,11 @@ int main() {
     data = 0;
     cout << data.empty() << "<\n";
 
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     cout << endl << endl;
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
     data = NULL_DATA;
     cout << "Empty data object:\n";
@@ -174,6 +179,17 @@ int main() {
     data["List"] = list();
     data["List"].append(NULL_DATA);
     data["Dict"] = dict();
+    cout << data.json();
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    cout << endl << endl;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+    data = BOOL_TRUE;
+    cout << data.json();
+    data = BOOL_FALSE;
     cout << data.json();
 
     return 0;
