@@ -108,7 +108,7 @@ class Data {
                 "Datatype must be 'list' (invalid get)"
             );
             crash_and_burn_if(
-                index < 0 || index >= lst.size(),
+                index < 0 || index >= (int)lst.size(),
                 "Index error (out of bounds): "
                 + number_to_string(index)
             );
@@ -169,7 +169,7 @@ class Data {
                     }
                     index = atoi(key);
                     crash_and_burn_if(
-                        index >= data->lst.size(),
+                        index >= (int)data->lst.size(),
                         "Index error (out of bounds): " + string(key)
                     );
                     IF_IT_SURVIVES {
@@ -220,7 +220,7 @@ class Data {
                     }
                     index = atoi(key);
                     crash_and_burn_if(
-                        index >= data->lst.size(),
+                        index >= (int)data->lst.size(),
                         "Index error (out of bounds): " + string(key)
                     );
                     IF_IT_SURVIVES {
@@ -334,6 +334,8 @@ class Data {
                 case t_dict:
                     return dct.empty();
 
+                default:
+                    return true;
             }
         }
 
@@ -483,6 +485,9 @@ class Data {
                 case t_number:
                     output_buffer += number_to_string(value.num) + ",\n";
                     break;
+
+                default:
+                    break;
             }
         }
 
@@ -550,6 +555,9 @@ class Data {
                         indent(level);
                     }
                     output_buffer += "],\n";
+                    break;
+
+                default:
                     break;
             }
             return result;
