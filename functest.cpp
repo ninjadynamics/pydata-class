@@ -1,6 +1,26 @@
 
+namespace __hidden__ {
+    struct print {
+        bool space;
+        print() : space(false) {}
+        ~print() { std::cout << std::endl; }
+
+        template <typename T>
+        print &operator , (const T &t) {
+            if (space) std::cout << ' ';
+            else space = true;
+            std::cout << t;
+            return *this;
+        }
+    };
+}
+
+#define print __hidden__::print(),
+
 int main() {
     //Note: Empty keys ("") can be problematic for JSON output!
+
+    using namespace PyData;
 
     Data data = dict();
     data["A (string)"]      = "str_value";
@@ -16,31 +36,31 @@ int main() {
     data["K (zero string)"] = "";
     data["L (list)"]        = list();
     data["M (null)"]        = NULL_DATA;
-    data["N (bool)"]        = BOOL_FALSE;
-    data["O (bool)"]        = BOOL_TRUE;
-    cout << "Data: " << data.json() << endl;
+    data["N (bool)"]        = FALSE;
+    data["O (bool)"]        = TRUE;
+    print "Data: ", data.json();
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    cout << endl;
+    print "";
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
     data = 1;
-    cout << "Data: " << data.json();
+    print "Data: ", data.json();
 
     data = "A";
-    cout << "Data: " << data.json();
+    print "Data: ", data.json();
 
     data = dict();
-    cout << "Data: " << data.json();
+    print "Data: ", data.json();
 
     data = list();
-    cout << "Data: " << data.json();
+    print "Data: ", data.json();
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    cout << endl << endl;
+    print "\n";
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
@@ -76,49 +96,49 @@ int main() {
             data["bruno"]["stuff"]["numbers"][5].append(777);
             data["bruno"]["stuff"]["numbers"][5].append(dict());
             data["bruno"]["stuff"]["numbers"][5].append(list());
-    cout << "Data: " << data.json();
+    print "Data: ", data.json();
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    cout << endl << endl;
+    print "\n";
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
     // Direct Access (read)
     data["bruno"] = "silva";
-        cout << data["bruno"].str << "\n";
-        cout << data["bruno"].char_at(-2).str << "<\n";
-        cout << data["bruno"].endswith("va") << "<\n";
-        cout << data["bruno"].endswith("wa") << "<\n";
-        cout << data["bruno"].startswith("sil") << "<\n";
-        cout << data["bruno"].startswith("syl") << "<\n";
-        cout << data["bruno"].find("lv") << "<\n";
-        // cout << data.startswith("syl") << "<\n";
+        print data["bruno"].str;
+        print data["bruno"].char_at(-2).str + "<";
+        print data["bruno"].endswith("va") + "<";
+        print data["bruno"].endswith("wa") + "<";
+        print data["bruno"].startswith("sil") + "<";
+        print data["bruno"].startswith("syl") + "<";
+        print data["bruno"].find("lv") + "<";
+        // print data.startswith("syl") + "<";
 
     data["bruno"] = 1983;
-        cout << data["bruno"].num << "\n";
+        print data["bruno"].num;
 
     data["bruno"] = dict();
     data["bruno"]["home"] = "setubal";
-        cout << data["bruno"]["home"].str << "\n";
-        cout << data["bruno"].get("home")->str << "\n";
+        print data["bruno"]["home"].str;
+        print data["bruno"].get("home")->str;
         data["bruno"]["list"] = list();
         data["bruno"]["list"].append("bananas");
         data["bruno"]["list"].get(12);
     data["bruno"].get("listaaaa");
-        cout << data["bruno"]["list"].json();
+        print data["bruno"]["list"].json();
 
-    cout << "data.get_data_at(): " << data.get_data_at("/bruno/home/")->str << "\n";
-    cout << "data.get_data_at(): " << data.get_data_at("/bruno/list/0/")->str << "\n";
-    cout << "data.get_data_at(): " << data.get_data_at("/bruno/list/1/") << "\n";    //expect null pointer
-    cout << "data.get_data_at(): " << data.get_data_at("/bruno/list/-1/") << "\n";   //expect null pointer
-    cout << "data.get_data_at(): " << data.get_data_at("/bruno/list/aaa/") << "\n";  //expect null pointer
-    cout << "data.get_data_at(): " << data.get_data_at("/bruno/asdsadds/") << "\n";  //expect null pointer
+    print "data.get_data_at():", data.get_data_at("/bruno/home/")->str;
+    print "data.get_data_at():", data.get_data_at("/bruno/list/0/")->str;
+    print "data.get_data_at():", data.get_data_at("/bruno/list/1/");    //expect null pointer
+    print "data.get_data_at():", data.get_data_at("/bruno/list/-1/");   //expect null pointer
+    print "data.get_data_at():", data.get_data_at("/bruno/list/aaa/");  //expect null pointer
+    print "data.get_data_at():", data.get_data_at("/bruno/asdsadds/");  //expect null pointer
 
     data.set_data_at("/bruno/home/", "lisbon");
-    cout << "data.get_data_at(): " << data.get_data_at("/bruno/home/")->str << "\n";
+    print "data.get_data_at():", data.get_data_at("/bruno/home/")->str;
 
-    cout << data.get_data_at("/")->json() << "\n";
+    print data.get_data_at("/")->json();
 
     data["bruno"] = dict();
 
@@ -126,71 +146,71 @@ int main() {
     data["bruno"].lst.push_back(Data(123));
     data["bruno"].lst.push_back(Data("ABC"));
     data["bruno"].append(Data(456));
-        cout << data["bruno"][0].num << "\n";
-        cout << data["bruno"][1].str << "\n";
-        cout << data["bruno"][2].num << "\n";
-        cout << data["bruno"][-1].num << "\n";
+        print data["bruno"][0].num;
+        print data["bruno"][1].str;
+        print data["bruno"][2].num;
+        print data["bruno"][-1].num;
 
-    cout << data.has_key("bruno") << "<\n";
+    print data.has_key("bruno") + "<";
 
-    cout << "Datatype of data[\"bruno\"]: "<< data["bruno"].get_datatype() << "\n";
+    print "Datatype of data[\"bruno\"]: ", data["bruno"].get_datatype();
 
     data = " Hello World! ";
-    cout << ">" << data.ltrim().str << "<\n";
-    cout << ">" << data.rtrim().str << "<\n";
-    cout << ">" << data.trim().str << "<\n";
+    print ">" + data.ltrim().str + "<";
+    print ">" + data.rtrim().str + "<";
+    print ">" + data.trim().str + "<";
 
     data = string();
-    cout << data.empty() << "<\n";
+    print "Is data(string) empty?", data.empty();
 
     data = list();
-    cout << data.empty() << "<\n";
+    print "Is data(list) empty?", data.empty();
 
     data = dict();
-    cout << data.empty() << "<\n";
+    print "Is data(dict) empty?", data.empty();
 
     data = 0;
-    cout << data.empty() << "<\n";
+    print "Is data(number) empty?", data.empty();
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    cout << endl << endl;
+    print "\n";
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
     data = NULL_DATA;
-    cout << "Empty data object:\n";
-    cout << data.json();
-    cout << "End of JSON output\n\n";
+    print "Empty data object:";
+    print data.json();
+    print "End of JSON output\n";
 
     data = dict();
-    cout << "Empty root dict:\n";
-    cout << data.json();
-    cout << "End of JSON output\n\n";
+    print "Empty root dict:";
+    print data.json();
+    print "End of JSON output\n";
 
     data = list();
-    cout << "Empty root list:\n";
-    cout << data.json();
-    cout << "End of JSON output\n\n";
+    print "Empty root list:";
+    print data.json();
+    print "End of JSON output\n";
 
-    cout << "Null value / null element / empty dict:\n";
+    print "Null value / null element / empty dict:";
     data = dict();
     data["Null"] = NULL_DATA;
     data["List"] = list();
     data["List"].append(NULL_DATA);
     data["Dict"] = dict();
-    cout << data.json();
+    print data.json();
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    cout << endl << endl;
+    print "\n";
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-    data = BOOL_TRUE;
-    cout << data.json();
-    data = BOOL_FALSE;
-    cout << data.json();
+    data = TRUE;
+    print data.json();
+    data = FALSE;
+    print data.json();
 
     return 0;
 }

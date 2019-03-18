@@ -25,17 +25,17 @@ SOFTWARE.
 
 #include "pydata.h"
 
-class Data {
+class PyData::Data {
     public:
         bool   bln;
         double num;
         string str;
         #if __cplusplus < 199711L
-        VMAP  _dct;
+        vmap  _dct;
         #else
-        DICT   dct;
+        dict   dct;
         #endif
-        LIST   lst;
+        list   lst;
 
         Data() {
             initialize();
@@ -71,13 +71,13 @@ class Data {
             datatype = t_bool;
         }
 
-        Data(const DICT &m) {
+        Data(const dict &m) {
             initialize();
             dct = m;
             datatype = t_dict;
         }
 
-        Data(const LIST &v) {
+        Data(const list &v) {
             initialize();
             lst = v;
             datatype = t_list;
@@ -91,7 +91,7 @@ class Data {
             output_buffer = "";
             json_recursive(*this, ROOT);
             remove_trailing_comma();
-            return output_buffer;
+            return Data(output_buffer).trim().str;
         }
 
         void append(const Data &data) {
@@ -133,7 +133,7 @@ class Data {
             IF_IT_SURVIVES {
                 return NULL;
             }
-            DICT::iterator it;
+            dict::iterator it;
             it = dct.find(key);
             if (it == dct.end()) {
                 return NULL;
@@ -153,7 +153,7 @@ class Data {
             while (key != 0)
             {
                 if (data->datatype == t_dict) {
-                    DICT::iterator it;
+                    dict::iterator it;
                     it = data->dct.find(key);
                     crash_and_burn_if(
                         it == data->dct.end(),
@@ -204,7 +204,7 @@ class Data {
             while (key != 0)
             {
                 if (data->datatype == t_dict) {
-                    DICT::iterator it;
+                    dict::iterator it;
                     it = data->dct.find(key);
                     crash_and_burn_if(
                         it == data->dct.end(),
@@ -261,7 +261,7 @@ class Data {
             return str.find(substr) == 0;
         }
 
-        size_t find(const string &substr) {
+        int find(const string &substr) {
             datatype_must_be(t_string);
             size_t index = str.find(substr);
             if (index == string::npos) {
@@ -270,7 +270,7 @@ class Data {
             return index;
         }
 
-        size_t find(const char &c) {
+        int find(const char &c) {
             datatype_must_be(t_string);
             size_t index = str.find(c);
             if (index == string::npos) {
@@ -294,7 +294,7 @@ class Data {
 
         Data split(const string &splitter) {
             datatype_must_be(t_string);
-            Data result = LIST();
+            Data result = list();
             char *cstr = new char[str.size() + 1];
             char *splt = new char[splitter.size() + 1];
             strcpy(cstr, str.c_str());
@@ -347,7 +347,7 @@ class Data {
         }
 
         bool has_key(string key) {
-            DICT::iterator it;
+            dict::iterator it;
             it = dct.find(key);
             return it != dct.end();
         }
@@ -382,13 +382,13 @@ class Data {
             datatype = t_bool;
         }
 
-        void operator= (DICT m) {
+        void operator= (dict m) {
             initialize();
             dct = m;
             datatype = t_dict;
         }
 
-        void operator= (LIST v) {
+        void operator= (list v) {
             initialize();
             lst = v;
             datatype = t_list;
@@ -429,6 +429,7 @@ class Data {
             is_error = false;
             if (condition) {
                 is_error = true;
+                using namespace std;
                 cerr << "> PyData ERROR [ " << error_message << " ]" << endl;
                 if (error_survival && !is_fatal) return;
                 exit(EXIT_FAILURE);
@@ -455,6 +456,7 @@ class Data {
         }
 
         string number_to_string(const double &n) {
+            using namespace std;
             string number = to_string(n);
             int i = number.size();
             if (n == floor(n)) {
@@ -525,8 +527,8 @@ class Data {
             }
         }
 
-        bool iterate_dictionary(DICT &m, const int &level) {
-            DICT::iterator i;
+        bool iterate_dictionary(dict &m, const int &level) {
+            dict::iterator i;
             for (i = m.begin(); i != m.end(); ++i) {
                 string  key = i->first;
                 Data &value = i->second;
@@ -535,8 +537,8 @@ class Data {
             return !m.empty();
         }
 
-        bool iterate_list(LIST &v, const int &level) {
-            LIST::iterator i;
+        bool iterate_list(list &v, const int &level) {
+            list::iterator i;
             for (i = v.begin(); i != v.end(); ++i) {
                 string withoutKey; Data &value = *i;
                 print_content(withoutKey, value, level);
@@ -642,18 +644,10 @@ class Data {
         }
 };
 
-DICT dict() {
-    return DICT();
-}
-
-LIST list() {
-    return LIST();
-}
-
-void set_error_handling(bool mode) {
+void PyData::set_error_handling(bool mode) {
     error_survival = !mode;
 }
 
-void set_path_separator(const string &s) {
+void PyData::set_path_separator(const string &s) {
     separator = s;
 }

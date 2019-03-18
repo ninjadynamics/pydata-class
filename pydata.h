@@ -25,59 +25,40 @@ SOFTWARE.
 
 #ifndef PYDATA_HEADER
 #define PYDATA_HEADER
+
 #if __cplusplus < 199711L
 #include <iostream.h>
 #else
 #include <iostream>
 #endif
+
 #include <cstring>
 #include <string>
 #include <vector>
 #include <map>
 
 /*
-Notes:
-
 We need to use VMAP (Vector of Maps) in order to trick
 older compilers into accepting a similar construction to
 Class Data { map<string, Data> dct; ... };
-
-Regarding the extra whitespace placed around the angled
-brackets (</>), this is entirely necessary due to the
-fact that those same older compilers will confuse a double
-closing (...ing, Data>>) with a bitshift operation (>>).
 */
 
-#define ROOT            0
-#define SOFT            false
-#define HARD            true
-#define DICT            map    < string, Data >
-#define LIST            vector < Data         >
-#define VMAP            vector < DICT         >
-#define NEW_VMAP        VMAP(); _dct.push_back(DICT())
-#define IF_IT_SURVIVES  if (it_survives())
-#define PAUSE(x)        cout << x << endl; getchar()
 #define NULL_DATA       Data()
-#define BOOL_FALSE      '\0'
-#define BOOL_TRUE       '\1'
-
-#if __cplusplus < 199711L
-#define dct _dct[0]
-#endif
-
-using namespace std;
+#define NEW_VMAP        vmap(); _dct.push_back(dict())
+#define PAUSE(x)        std::cout << x << std::flush; getchar()
+#define IF_IT_SURVIVES  if (it_survives())
 
 #if __cplusplus <= 199711L
 #include <stdio.h>
 #include <stdlib.h>
-string to_string(double value)
+std::string to_string(double value)
 {
     char numbuffer[32];
     sprintf(numbuffer, "%f", value);
     return numbuffer;
 }
 
-string to_string(long value)
+std::string to_string(long value)
 {
     char numbuffer[32];
     sprintf(numbuffer, "%ld", value);
@@ -85,18 +66,39 @@ string to_string(long value)
 }
 #endif
 
-typedef enum Datatype {
-    t_null,
-    t_bool,
-    t_number,
-    t_string,
-    t_dict,
-    t_list
-} Datatype;
+namespace PyData {
+    const size_t  ROOT  = 0;
+    const bool    SOFT  = false;
+    const bool    HARD  = true;
+    const char    FALSE = '\0';
+    const char    TRUE  = '\1';
 
-class    Data;
-Datatype datatype;
-string   separator = "/";
-bool     error_survival = true;
-string   datatypes[] = {"null", "bool", "number", "string", "dict", "list"};
+    #if __cplusplus < 199711L
+    #define dct _dct[0]
+    #endif
+
+    typedef std::string string;
+    typedef enum Datatype {
+        t_null,
+        t_bool,
+        t_number,
+        t_string,
+        t_dict,
+        t_list
+    } Datatype;
+
+    class    Data;
+    Datatype datatype;
+    string   separator = "/";
+    bool     error_survival = true;
+    string   datatypes[] = {"null", "bool", "number", "string", "dict", "list"};
+
+    typedef  std::map    <std::string, Data> dict;
+    typedef  std::vector <Data             > list;
+    typedef  std::vector <dict             > vmap;
+
+    void set_error_handling(bool mode);
+    void set_path_separator(const string &s);
+}
+
 #endif /* End of include guard: PYDATA_HEADER */
