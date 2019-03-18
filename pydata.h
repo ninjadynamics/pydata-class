@@ -52,24 +52,6 @@ Class Data { map<string, Data> dct; ... };
 #define PAUSE(x)        std::cout << x << std::flush; getchar()
 #define IF_IT_SURVIVES  if (it_survives())
 
-#if __cplusplus <= 199711L
-#include <stdio.h>
-#include <stdlib.h>
-std::string to_string(double value)
-{
-    char numbuffer[32];
-    sprintf(numbuffer, "%f", value);
-    return numbuffer;
-}
-
-std::string to_string(long value)
-{
-    char numbuffer[32];
-    sprintf(numbuffer, "%ld", value);
-    return numbuffer;
-}
-#endif
-
 namespace PyData {
     const size_t  ROOT  = 0;
     const bool    SOFT  = false;
@@ -87,7 +69,7 @@ namespace PyData {
         t_list
     } Datatype;
 
-    class    Data;    
+    class    Data;
     typedef  std::map    <std::string, Data> dict;
     typedef  std::vector <Data             > list;
     typedef  std::vector <dict             > vmap;

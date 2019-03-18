@@ -25,6 +25,24 @@ SOFTWARE.
 
 #include "pydata.h"
 
+#if __cplusplus <= 199711L
+#include <stdio.h>
+#include <stdlib.h>
+std::string to_string(double value)
+{
+    char numbuffer[32];
+    sprintf(numbuffer, "%f", value);
+    return numbuffer;
+}
+
+std::string to_string(long value)
+{
+    char numbuffer[32];
+    sprintf(numbuffer, "%ld", value);
+    return numbuffer;
+}
+#endif
+
 using namespace PyData;
 
 bool error_survival = true;
