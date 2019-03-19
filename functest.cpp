@@ -107,13 +107,12 @@ int main() {
     // Direct Access (read)
     data["bruno"] = "silva";
         print data["bruno"].str;
-        print data["bruno"].char_at(-2).str + "<";
-        print data["bruno"].endswith("va") + "<";
-        print data["bruno"].endswith("wa") + "<";
-        print data["bruno"].startswith("sil") + "<";
-        print data["bruno"].startswith("syl") + "<";
-        print data["bruno"].find("lv") + "<";
-        // print data.startswith("syl") + "<";
+        print data["bruno"].char_at(-2).str;
+        print data["bruno"].endswith("va");
+        print data["bruno"].endswith("wa");
+        print data["bruno"].startswith("sil");
+        print data["bruno"].startswith("syl");
+        print data["bruno"].find("lv");
 
     data["bruno"] = 1983;
         print data["bruno"].num;
