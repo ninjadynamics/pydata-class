@@ -150,7 +150,7 @@ int main() {
         print data["bruno"][2].num;
         print data["bruno"][-1].num;
 
-    print data.has_key("bruno") + "<";
+    print data.has_key("bruno");
 
     print "Datatype of data[\"bruno\"]: ", data["bruno"].get_datatype();
 
