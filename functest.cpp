@@ -1,4 +1,4 @@
-
+// Stolen from https://gist.github.com/fresky/5524148
 namespace __hidden__ {
     struct print {
         bool space;
